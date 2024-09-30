@@ -1,0 +1,38 @@
+#include <DC_motor_controller.h>
+DC_motor_controller motE, motD;
+
+int in1D = 5;
+int in2D = 6;
+int canalAD = 2;
+int canalBD = 4;
+int in1E = 10;
+int in2E = 9;
+int canalAE = 3;
+int canalBE = 7;
+
+void interrupt_motE() {
+  motE.isr(); }
+void interrupt_motD() {
+  motD.isr(); }
+
+void setup() {
+  motD.hBridge(in1D, in2D);
+  motD.setEnconderPin(canalAD, canalBD);
+  attachInterrupt(digitalPinToInterrupt(canalAD), interrupt_motD, FALLING);
+  motD.setRR(45);
+  motD.setPins();
+
+  motE.hBridge(in1E, in2E);
+  motE.setEnconderPin(canalAE, canalBE);
+  attachInterrupt(digitalPinToInterrupt(canalAE), interrupt_motE, FALLING);
+  motE.setRR(45);
+  motE.setPins();
+
+}
+
+void loop() {
+  motE.walk(100, 1);
+  motD.stop(1000);
+
+}
+-
